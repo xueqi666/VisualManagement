@@ -49,9 +49,7 @@
             </el-table-column>
             <el-table-column label="源文件" width="100">
               <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="showFile(scope.row.content_source_url)"
+                <el-button size="mini" @click="showFile(scope.row.url_id)"
                   >查看</el-button
                 >
               </template>
@@ -79,7 +77,7 @@
 
 
 <script>
-import { pageList } from "../api/list";
+import { pageList, urlGet } from "../api/list";
 import CitySelect from "./components/CitySelect.vue";
 export default {
   data() {
@@ -99,8 +97,10 @@ export default {
   },
 
   methods: {
-    showFile(url) {
-      window.open(url, "_blank");
+    async showFile(url_id) {
+      let { data } = await urlGet({ url_id });
+      
+      window.open(data.url, "_blank");
     },
     pageListShow() {
       let { postion, tag_type, pageNum, pageSize } = this;

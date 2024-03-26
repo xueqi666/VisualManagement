@@ -79,7 +79,7 @@ export default {
 
       this.cities = res.data.reduce((acc, cur) => {
         const province = cur.povince;
-        const city = cur.city.split(",");
+        const city = cur.city.split("-");
         if (province in acc) {
           acc[province].push(...city);
         } else {

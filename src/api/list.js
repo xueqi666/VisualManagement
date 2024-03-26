@@ -14,4 +14,12 @@ export function provinceCityGet() {
     });
 }
 
+export function urlGet(data) {
+    return axios({
+        url: '/list/dataList/urlId',
+        method: 'get',
+        params: data
+    });
+}
+
 
