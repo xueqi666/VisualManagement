@@ -66,6 +66,7 @@
             @current-change="pageChange"
             :page-size="pageSize"
             style="margin: 20px 0 0 200px"
+            v-if="total > 0"
           >
           </el-pagination>
         </el-row>
@@ -79,13 +80,15 @@
 <script>
 import { pageList, urlGet } from "../api/list";
 import CitySelect from "./components/CitySelect.vue";
+
+import { mapState } from "vuex";
 export default {
   data() {
     return {
       navIndex: "0",
       navName: ["政策文件", "政策解读", "新闻动态", "可视化分析"],
       tag_type: "政策文件",
-      postion: "贵州省",
+      postion: "河南省",
       pageNum: 1,
       pageSize: 10,
       tableData: [],
@@ -95,7 +98,16 @@ export default {
   components: {
     CitySelect,
   },
-
+  computed: {
+    ...mapState(["startDate"]),
+    ...mapState(["endDate"]),
+    ...mapState(["status"]),
+  },
+  watch: {
+    status() {
+      this.pageListShow();
+    },
+  },
   methods: {
     async showFile(url_id) {
       let { data } = await urlGet({ url_id });
@@ -103,8 +115,15 @@ export default {
       window.open(data.url, "_blank");
     },
     pageListShow() {
-      let { postion, tag_type, pageNum, pageSize } = this;
-      pageList({ postion, tag_type, pageNum, pageSize }).then((res) => {
+      let { postion, tag_type, pageNum, pageSize, startDate, endDate } = this;
+      pageList({
+        postion,
+        tag_type,
+        pageNum,
+        pageSize,
+        startDate,
+        endDate,
+      }).then((res) => {
         if (res.code === 200) {
           this.tableData = res.data.tableData;
           this.total = res.data.total;
@@ -138,8 +157,9 @@ export default {
       this.pageListShow();
     },
   },
-  mounted() {
+  mounted(query) {
     this.pageListShow();
+    console.log(query);
   },
 };
 </script>

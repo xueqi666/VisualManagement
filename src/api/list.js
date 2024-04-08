@@ -21,5 +21,12 @@ export function urlGet(data) {
         params: data
     });
 }
+export function suggestAnalyseGet(data) {
+    return axios({
+        url: '/list/dataList/suggestAnalyse',
+        method: 'get',
+        params: data
+    });
+}
 
 

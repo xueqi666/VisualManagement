@@ -9,6 +9,7 @@ import utils from "./lib/utils";
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import "echarts";
+import store from './store'
 import VueECharts from 'vue-echarts';
 Vue.use(ElementUI);
 Vue.prototype.$echarts = function (el) {
@@ -21,5 +22,6 @@ Vue.use(utils)
 Vue.component("v-chart", VueECharts);
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
+  store
 }).$mount('#app')

@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import { provinceCityGet } from "../../api/list";
+import { provinceCityGet, suggestAnalyseGet } from "../../api/list";
 export default {
   props: {
     selectedProvince: {
       type: String,
-      default: "贵州省", // 默认值为 20
+      default: "河南省", // 默认值为 20
     },
   },
 
@@ -88,6 +88,7 @@ export default {
         return acc;
       }, {});
     });
+    suggestAnalyseGet().then((res) => {});
   },
 };
 </script>

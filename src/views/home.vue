@@ -21,9 +21,10 @@
           @on-select="handleSelect"
           :active-name="activeName"
         >
-          <MenuItem name="day"> 昨日 </MenuItem>
-          <MenuItem name="week"> 近一周 </MenuItem>
-          <MenuItem name="month"> 近一月 </MenuItem>
+          <MenuItem name="day"> {{ $store.state.startDate }} </MenuItem>
+          <MenuItem name="day" v-if="endTime"> 至</MenuItem>
+          <MenuItem name="week"> {{ $store.state.endDate }} </MenuItem>
+
           <Submenu name="4">
             <template slot="title">
               <Icon type="ios-settings-outline" size="24" color="#60C2D4" />
@@ -37,11 +38,10 @@
       v-model="modal"
       title="选择时间"
       :mask-closable="false"
-      @on-ok="getMonthBetween(startTime, endTime)"
+      @on-ok="handleOk(startTime, endTime)"
     >
       <DatePicker
         @on-change="pickStartDate"
-        :options="optionStart"
         type="date"
         placeholder="选择开始日期"
         style="width: 200px"
@@ -49,7 +49,6 @@
       <span style="padding: 0 20px; color: #75deef">至</span>
       <DatePicker
         @on-change="pickEndDate"
-        :options="optionEnd"
         type="date"
         placeholder="选择结束日期"
         style="width: 200px"
@@ -63,7 +62,7 @@
 
 <script>
 export default {
-  name: "",
+  name: "home",
   data() {
     return {
       activeName: "month", // 默认显示近一月
@@ -87,9 +86,33 @@ export default {
     this.handleSelect(this.activeName); // 默认显示近一个月
   },
   methods: {
+    //比较时间大小
+    compareDate(start, end) {
+      if (start && end) {
+        let startTime = new Date(start).getTime();
+        let endTime = new Date(end).getTime();
+        if (startTime > endTime) {
+          return [end, start];
+        } else {
+          return [start, end];
+        }
+      }
+    },
+    handleOk(start, end) {
+      if (start && end) {
+        let dates = this.compareDate(start, end);
+        this.$store.state.startDate = dates[0];
+        this.$store.state.endDate = dates[1];
+      } else {
+        this.$store.state.startDate = start;
+        this.$store.state.endDate = end;
+      }
+      this.$store.state.status = Date.now();
+    },
     pickStartDate(date) {
       // 选择开始时间的回调
       this.startTime = date;
+
       this.optionEnd = {
         disabledDate(d) {
           // 禁止选择开始时间之前的日期
