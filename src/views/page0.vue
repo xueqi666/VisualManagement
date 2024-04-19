@@ -1,7 +1,7 @@
 <template>
   <div class="page0">
     <el-row>
-      <el-col :span="3">
+      <el-col :span="3" :class="navIndex===4?'nav4':''">
         <el-menu
           :default-active="navIndex"
           class="el-menu-vertical"
@@ -25,54 +25,61 @@
             <i class="el-icon-menu"></i>
             <span slot="title">{{ navName[3] }}</span>
           </el-menu-item>
+          <el-menu-item index="4" @click="navIndexChange(4)">
+            <i class="el-icon-headset"></i>
+            <span slot="title">{{ navName[4] }}</span>
+          </el-menu-item>
         </el-menu>
       </el-col>
       <el-col :span="21">
-        <el-row>
-          <CitySelect
-            style="margin-top: 15px"
-            @procit="changProvinceCity"
-          ></CitySelect>
-        </el-row>
-        <el-row>
-          <el-table :data="tableData" class="el-table-style" :height="450">
-            <el-table-column label="发布日期" width="150">
-              <template slot-scope="scope">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{
-                  scope.row.publish_date
-                }}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="title" label="标题"> </el-table-column>
-            <el-table-column prop="author" label="发布机构" width="200">
-            </el-table-column>
-            <el-table-column label="源文件" width="100">
-              <template slot-scope="scope">
-                <el-button size="mini" @click="showFile(scope.row.url_id)"
-                  >查看</el-button
-                >
-              </template>
-            </el-table-column>
-          </el-table>
-        </el-row>
-        <el-row>
-          <el-pagination
-            background
-            layout="prev, pager, next"
-            :total="total"
-            @prev-click="prevPage"
-            @next-click="nextPage"
-            @current-change="pageChange"
-            :page-size="pageSize"
-            style="margin: 20px 0 0 200px"
-            v-if="total > 0"
-          >
-          </el-pagination>
-        </el-row>
+        <div v-if="navIndex !== 4">
+          <el-row>
+            <CitySelect
+              style="margin-top: 15px"
+              @procit="changProvinceCity"
+            ></CitySelect>
+          </el-row>
+          <el-row>
+            <el-table :data="tableData" class="el-table-style" :height="450">
+              <el-table-column label="发布日期" width="150">
+                <template slot-scope="scope">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{
+                    scope.row.publish_date
+                  }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="title" label="标题"> </el-table-column>
+              <el-table-column prop="author" label="发布机构" width="200">
+              </el-table-column>
+              <el-table-column label="源文件" width="100">
+                <template slot-scope="scope">
+                  <el-button size="mini" @click="showFile(scope.row.url_id)"
+                    >查看</el-button
+                  >
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-row>
+          <el-row>
+            <el-pagination
+              background
+              layout="prev, pager, next"
+              :total="total"
+              @prev-click="prevPage"
+              @next-click="nextPage"
+              @current-change="pageChange"
+              :page-size="pageSize"
+              style="margin: 20px 0 0 200px"
+              v-if="total > 0"
+            >
+            </el-pagination>
+          </el-row>
+        </div>
+
+        <router-view style="margin-left: 60px;" v-else></router-view>
       </el-col>
     </el-row>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -85,8 +92,15 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      dialogVisible: false,
       navIndex: "0",
-      navName: ["政策文件", "政策解读", "新闻动态", "可视化分析"],
+      navName: [
+        "政策文件",
+        "政策解读",
+        "新闻动态",
+        "可视化分析",
+        "政策咨询客服",
+      ],
       tag_type: "政策文件",
       postion: "河南省",
       pageNum: 1,
@@ -111,7 +125,7 @@ export default {
   methods: {
     async showFile(url_id) {
       let { data } = await urlGet({ url_id });
-      
+
       window.open(data.url, "_blank");
     },
     pageListShow() {
@@ -133,12 +147,17 @@ export default {
       });
     },
     navIndexChange(index) {
+      this.navIndex = index;
       this.tag_type = this.navName[index];
-      if (index === 3) {
-        this.$router.push({ name: "visual" });
+      if (index === 4) {
+        this.$router.push({ name: "kefu" });
+      } else {
+        if (index === 3) {
+          this.$router.push({ name: "visual" });
+        }
+        this.pageNum = 1;
+        this.pageListShow();
       }
-      this.pageNum = 1;
-      this.pageListShow();
     },
     changProvinceCity(data) {
       this.postion = data;
@@ -183,5 +202,9 @@ export default {
 .el-table-style {
   width: 90%;
   margin-top: 50px;
+}
+
+.nav4{
+margin-top: 70px;
 }
 </style>

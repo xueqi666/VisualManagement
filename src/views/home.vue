@@ -7,11 +7,11 @@
           @on-select="(name) => $route.name !== name && $router.push(name)"
           :active-name="$route.name"
         >
-          <MenuItem name="page0"> page0 </MenuItem>
-          <MenuItem name="page1"> page1 </MenuItem>
+          <MenuItem name="page0">招商数据 </MenuItem>
+          <!-- <MenuItem name="page1"> page1 </MenuItem>
           <MenuItem name="page2"> page2 </MenuItem>
           <MenuItem name="page3"> page3 </MenuItem>
-          <MenuItem name="page4"> page4 </MenuItem>
+          <MenuItem name="page4"> page4 </MenuItem> -->
         </Menu>
       </div>
       <div class="header-title">招商政策信息可视化</div>
@@ -30,6 +30,7 @@
               <Icon type="ios-settings-outline" size="24" color="#60C2D4" />
             </template>
             <MenuItem name="filter">筛选</MenuItem>
+            <MenuItem name="destroyToken">注销</MenuItem>
           </Submenu>
         </Menu>
       </div>
@@ -86,6 +87,13 @@ export default {
     this.handleSelect(this.activeName); // 默认显示近一个月
   },
   methods: {
+    destroyToken() {
+      localStorage.removeItem("visual_token");
+      this.$router.go(0);
+    },
+    disabledStartDate(time) {
+      console.log("2222222222", time);
+    },
     //比较时间大小
     compareDate(start, end) {
       if (start && end) {
@@ -172,6 +180,9 @@ export default {
           break;
         case "filter":
           this.modal = true;
+          break;
+        case "destroyToken":
+          this.destroyToken();
           break;
         default:
           break;

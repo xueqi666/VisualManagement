@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { provinceCityGet, suggestAnalyseGet } from "../../api/list";
+import { provinceCityGet } from "../../api/list";
 export default {
   props: {
     selectedProvince: {
@@ -75,10 +75,10 @@ export default {
   },
   mounted() {
     provinceCityGet().then((res) => {
-      this.provinces = res.data.map((item) => item.povince);
+      this.provinces = res.data.map((item) => item.province);
 
       this.cities = res.data.reduce((acc, cur) => {
-        const province = cur.povince;
+        const province = cur.province;
         const city = cur.city.split("-");
         if (province in acc) {
           acc[province].push(...city);
@@ -88,7 +88,7 @@ export default {
         return acc;
       }, {});
     });
-    suggestAnalyseGet().then((res) => {});
+
   },
 };
 </script>

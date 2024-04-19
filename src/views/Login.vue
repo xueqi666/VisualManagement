@@ -25,9 +25,12 @@
       </el-form-item>
 
       <el-checkbox v-model="checked" class="loginRemember">记住我</el-checkbox>
-      <el-button type="primary" style="width: 100%" @click="submitLogin"
-        >登录</el-button
-      >
+      <div style="display: flex">
+        <el-button type="primary" style="width: 100%" @click="submitLogin"
+          >登录</el-button
+        >
+        <el-button style="width: 100%" @click="submitRegistry">注册</el-button>
+      </div>
     </el-form>
   </div>
 </template>
@@ -60,11 +63,14 @@ export default {
           ,
           { min: 6, message: "密码长度要大于6", trigger: "blur" },
         ],
-        code: [{ required: true, message: "请输入验证码", trigger: "blur" }],
+       
       },
     };
   },
   methods: {
+    submitRegistry() {
+      this.$router.push({path:"/registry"});
+    },
     submitLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
@@ -72,6 +78,7 @@ export default {
           login({ username, password }).then((res) => {
             if (res.code === 200 && res.data) {
               this.$message.success("登录成功");
+              localStorage.setItem("visual_token", Math.floor(Math.random()*1000000).toString().padStart(6,"0"));
               this.$router.push("/page0");
             } else {
               this.errText = "用户名或密码错误";
@@ -88,6 +95,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+
 .loginContainer {
   border-radius: 15px;
   background-clip: padding-box;
@@ -101,7 +109,7 @@ export default {
   box-shadow: 0 0 25px #f885ff;
 }
 .loginTitle {
-  margin: 0px auto 48px auto;
+  margin: 0px auto 25px auto;
   text-align: center;
   font-size: 40px;
 }

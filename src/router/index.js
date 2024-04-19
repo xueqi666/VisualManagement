@@ -9,6 +9,11 @@ const router = new Router({
         {
             path: '/',
             component: () => import('@/views/Login'),
+            
+        },
+        {
+            path: '/registry',
+            component: () => import('@/views/Registry'),
         },
         {
             path: '',
@@ -18,18 +23,21 @@ const router = new Router({
                 {
                     path: '/page0',
                     name: 'page0',
-                    component: () => import('@/views/page0')
+                    component: () => import('@/views/page0'),
+                    children: [
+                        {
+                            path: '/customerservice',
+                            name: 'kefu',
+                            component: () => import('@/views/CustomerService')
+                        },
+                    ]
                 },
                 {
                     path: '/datavisual',
                     name: 'visual',
                     component: () => import('@/views/DataVisual')
                 },
-                {
-                    path: '/a',
-                    name: 'a',
-                    component: () => import('@/views/components/a')
-                },
+
                 {
                     path: '/page1',
                     name: 'page1',

@@ -4,7 +4,7 @@ import axios from 'axios';
 const api = axios.create({
     baseURL: 'http://localhost:8080/api', // 设置请求的基础 URL
     timeout: 5000 // 设置请求超时时间
-});
+}); 
 
 // 请求拦截器
 api.interceptors.request.use(

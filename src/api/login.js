@@ -6,6 +6,12 @@ export function login(data) {
         data
     });
 }
-
+export function registry(data) {
+    return axios({
+        url: '/user/login/registry',
+        method: 'post',
+        data
+    });
+}
 
 
