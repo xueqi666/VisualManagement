@@ -10,15 +10,17 @@
           <el-form-item label="密码：" prop="password">
             <el-input v-model="user.password"></el-input>
           </el-form-item>
-          <el-form-item label="手机号：">
+          <el-form-item label="手机号：" prop="phone">
             <el-input v-model="user.phone"></el-input>
           </el-form-item>
-          <el-form-item label="邮箱：">
+          <el-form-item label="邮箱：" prop="email">
             <el-input v-model="user.email"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button @click="submitRegistry">注册</el-button>
-             <el-button @click="$router.push('/')" type="primary">返回登录</el-button>
+            <el-button @click="$router.push('/')" type="primary"
+              >返回登录</el-button
+            >
           </el-form-item>
         </el-form>
       </div>
@@ -36,7 +38,7 @@ export default {
         name: "",
         password: "",
         phone: "",
-        email: "",
+        email: "",  
       },
       // 创建验证规则
       rules: {
@@ -48,21 +50,36 @@ export default {
             trigger: "blur",
           },
         ],
-        name: [{ required: true, message: "用户名必填", trigger: "blur" }],
-        password: [ { required: true, message: "密码必填", trigger: "blur" },
+        name: [
+          { required: true, message: "用户名必填", trigger: "blur" },
+          {
+            min: 5,
+            max: 14,
+            message: "长度在 5 到 14 个字符",
+            trigger: "blur",
+          },
+        ],
+        password: [
+          { required: true, message: "密码必填", trigger: "blur" },
           ,
-          { min: 6, message: "密码长度要大于6", trigger: "blur" },],
+          { min: 6, message: "密码长度要大于6", trigger: "blur" },
+        ],
       },
     };
   },
   methods: {
     submitRegistry() {
+      let name = this.user.name;
+      let password = this.user.password;
       this.$refs.userForm.validate((valid) => {
         if (valid) {
           registry(this.user).then((res) => {
             if (res.code === 200 && res.data) {
               this.$message.success("注册成功");
-              this.$router.push("/");
+              this.$router.push({
+                name: "login",
+                query: { name, password },
+              });
             } else {
               this.$message.error("用户名已存在");
             }

@@ -63,39 +63,46 @@ export default {
           ,
           { min: 6, message: "密码长度要大于6", trigger: "blur" },
         ],
-       
       },
     };
   },
   methods: {
     submitRegistry() {
-      this.$router.push({path:"/registry"});
+      this.$router.push({
+        path: "/registry",
+      });
     },
-    submitLogin() {
+ submitLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           let { username, password } = this.loginForm;
           login({ username, password }).then((res) => {
             if (res.code === 200 && res.data) {
               this.$message.success("登录成功");
-              localStorage.setItem("visual_token", Math.floor(Math.random()*1000000).toString().padStart(6,"0"));
+              localStorage.setItem(
+                "visual_token",
+               res.data
+              );
               this.$router.push("/page0");
             } else {
               this.errText = "用户名或密码错误";
             }
+          }).catch(err => {
+          alert('服务器有问题')
           });
         }
       });
     },
   },
-  mounted() {
-    login();
+  mounted() {},
+  created() {
+    this.loginForm.username = this.$route.query.name || "admin";
+    this.loginForm.password = this.$route.query.password || "1234567";
   },
 };
 </script>
 
 <style lang="less" scoped>
-
 .loginContainer {
   border-radius: 15px;
   background-clip: padding-box;

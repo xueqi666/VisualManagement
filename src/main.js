@@ -17,7 +17,8 @@ Vue.prototype.$echarts = function (el) {
 }
 router.beforeEach(function (to, from, next) {
   let visual_token = localStorage.getItem('visual_token')
-  if (visual_token || to.fullPath === "/" || to.fullPath === "/registry") {
+  if (visual_token || to.name === "login" || to.name === "registry") {
+    console.log("eeeeeeeeeee",to, from, next);
     next();
   } else {
     next({ path: '/' })
@@ -38,7 +39,6 @@ router.beforeEach(function (to, from, next) {
   //   next(); //继续往后走
   // }
 
-  console.log("222222222222222222222", to, from);
 });
 
 Vue.prototype.$images = img
