@@ -393,6 +393,7 @@ export default {
   },
   mounted() {
     this.pageData();
+
   },
 };
 </script>

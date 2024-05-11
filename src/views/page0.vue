@@ -154,6 +154,7 @@ export default {
       } else {
         if (index === 3) {
           this.$router.push({ name: "visual" });
+                  //  window.open('http://localhost:8080/#/datavisual', "_blank");
         }
         this.pageNum = 1;
         this.pageListShow();

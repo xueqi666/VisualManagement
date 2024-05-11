@@ -21,6 +21,7 @@
           @on-select="handleSelect"
           :active-name="activeName"
         >
+           <MenuItem name='name'> 用户：{{ userName }} </MenuItem>
           <MenuItem name="day"> {{ $store.state.startDate }} </MenuItem>
           <MenuItem name="day" v-if="endTime"> 至</MenuItem>
           <MenuItem name="week"> {{ $store.state.endDate }} </MenuItem>
@@ -62,6 +63,8 @@
 </template>
 
 <script>
+import { computed } from '@vue/composition-api';
+
 export default {
   name: "home",
   data() {
@@ -78,6 +81,7 @@ export default {
           return date && date.valueOf() > Date.now() - 86400000;
         },
       },
+    
       optionEnd: {},
       resizeFn: null,
     };
@@ -85,6 +89,11 @@ export default {
   mounted() {
     window.addEventListener("resize", this.resizeFn);
     this.handleSelect(this.activeName); // 默认显示近一个月
+  },
+  computed: {
+    userName() {
+      return JSON.parse(atob( localStorage.getItem("visual_token").split(".")[1])).username
+    },
   },
   methods: {
     destroyToken() {
