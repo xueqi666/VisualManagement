@@ -96,8 +96,17 @@ export default {
   },
   mounted() {},
   created() {
-    this.loginForm.username = this.$route.query.name || "admin";
-    this.loginForm.password = this.$route.query.password || "1234567";
+    let visual_token = localStorage.getItem("visual_token")
+    if (this.$route.query.name) { 
+       this.loginForm.username = this.$route.query.name || "admin";
+      this.loginForm.password = this.$route.query.password || "1234567";
+       return
+    }
+    if (this.checked && visual_token) {
+      let user = JSON.parse(atob(visual_token.split('.')[1])) 
+         this.loginForm.username = user.username
+          this.loginForm.password = user.password
+    } 
   },
 };
 </script>

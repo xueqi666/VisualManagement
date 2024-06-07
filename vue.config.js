@@ -11,9 +11,9 @@ module.exports = {
         proxy: {
             '/api': {
                 target: 'http://localhost:7001',
-                pathRewrite: {'^/api':''}
+                pathRewrite: { '^/api': '' }
             }
         }
-        },
-        lintOnSave: false
-    }
+    },
+    lintOnSave: false
+}

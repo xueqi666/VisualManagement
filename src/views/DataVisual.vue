@@ -114,6 +114,7 @@
               @procit="pcity1"
               class="pcity"
               :selectedProvince="pcZhe1"
+                :disabled="true"
             ></CitySelect>
           </div>
           <div style="margin-top: 50px">
@@ -121,6 +122,7 @@
               @procit="pcity2"
               class="pcity"
               :selectedProvince="pcZhe2"
+                :disabled="true"
             >
             </CitySelect>
           </div>
@@ -129,6 +131,7 @@
               @procit="pcity3"
               class="pcity"
               :selectedProvince="pcZhe3"
+              :disabled="true"
             ></CitySelect>
           </div>
         </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="cent">
-    <el-select v-model="localSelectedProvince" @change="handleProvinceChange">
+    <el-select v-model="localSelectedProvince" @change="handleProvinceChange" :disabled="disabled">
       <el-option
         v-for="province in provinces"
         :key="province"
@@ -27,6 +27,10 @@ export default {
     selectedProvince: {
       type: String,
       default: "河南省", // 默认值为 20
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
   },
 
