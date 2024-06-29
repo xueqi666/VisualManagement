@@ -3,14 +3,15 @@
 > A Vue.js project
 招商政策数据可视化
 
+
 ``` bash
-# install dependencies
+# 安装依赖
 npm install
 
-# serve with hot reload at localhost:8080
+# 运行项目
 npm run serve
 
-# build for production with minification
+# 项目打包上线
 npm run build
 
 # build for production and view the bundle analyzer report
